@@ -15,7 +15,7 @@ const TestCaseSection = ({ handleSubmit }: any) => {
                     </Button>
                 </div>
                 <div className="text-gray-600 py-4">
-                    <p>Điền các cặp Question và Anwser để test khả năng trả lời của Chatbot.</p>
+                    <p>Điền các cặp Question và Answer để test khả năng trả lời của Chatbot.</p>
                     <p className="mt-2">
                         Sau đó nhấn <a href="#" className="text-blue-600">Kiểm tra</a> để xem kết quả.
                     </p>

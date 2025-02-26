@@ -3,16 +3,18 @@
 import Footer from '@/layout/footer';
 import Header from '@/layout/header';
 import { MoonStar } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import EmbedSection from './sections/embedSection';
 import TestCaseSection from './sections/testcaseSection';
 import CreateChatbotSection from './sections/createChatbotSection';
 import Image from 'next/image';
+import ResultSection from './sections/resultSection';
 
 export default function HomePage() {
 
     const [isLoading, setIsLoading] = useState(false);
     const [step, setStep] = useState(1);
+    const [data, setData] = useState(null as any);
 
     const handleChangeStep = (step: any) => {
         setStep(step);
@@ -30,8 +32,34 @@ export default function HomePage() {
         setStep(3);
     }
 
-    const handleSubmit = (step: any) => {
-
+    const handleSubmit = async (step: any) => {
+        setIsLoading(true);
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        const raw = JSON.stringify({
+            "test_cases": [
+                {
+                    "question": "n8n.khiemfle.com",
+                    "answer": "n8n.khiemfle.com",
+                    "unique": "abcd"
+                },
+            ]
+        });
+        const requestOptions: any = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow"
+        };
+        await fetch("https://n8n.khiemfle.com/webhook/ce5bfb91-e3cc-4441-8d49-ef53eae823b1", requestOptions)
+            .then((response) => response.text())
+            .then((result) => {
+                console.log(result);
+                setData(result);
+                setIsLoading(false);
+                setStep(4);
+            })
+            .catch((error) => console.error(error));
     }
 
     const renderStep = (step: any) => {
@@ -42,10 +70,14 @@ export default function HomePage() {
                 return <EmbedSection handleContinue={handleContinue} />;
             case 3:
                 return <TestCaseSection handleSubmit={handleSubmit} />;
+            case 4:
+                return <ResultSection data={data} />;
             default:
                 return <CreateChatbotSection handleCreateChatbot={handleCreateChatbot} />;
         }
     }
+
+    useEffect(() => { }, [data]);
 
     return (
         <div className="min-h-screen flex flex-col relative">
