@@ -15,17 +15,34 @@ export default function HomePage() {
     const [isLoading, setIsLoading] = useState(false);
     const [step, setStep] = useState(1);
     const [data, setData] = useState(null as any);
+    const [embedUrl, setEmbedUrl] = useState("" as any);
 
     const handleChangeStep = (step: any) => {
         setStep(step);
     }
 
-    const handleCreateChatbot = () => {
+    const handleCreateChatbot = async (url: string, interest: any) => {
         setIsLoading(true);
-        setTimeout(() => {
-            handleChangeStep(2);
-            setIsLoading(false);
-        }, 3000);
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        const raw = JSON.stringify({
+            "user_website": url,
+            "interest": interest
+        });
+        const requestOptions: any = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow"
+        };
+        await fetch("https://n8n.khiemfle.com/webhook/51c30a5e-baed-4a39-8ea2-212c36479d24", requestOptions)
+            .then((response) => response.json())
+            .then((result) => {
+                setEmbedUrl(result[0]?.result || "");
+                handleChangeStep(2);
+                setIsLoading(false);
+            })
+            .catch((error) => console.error(error));
     }
 
     const handleContinue = () => {
@@ -67,7 +84,7 @@ export default function HomePage() {
             case 1:
                 return <CreateChatbotSection handleCreateChatbot={handleCreateChatbot} />;
             case 2:
-                return <EmbedSection handleContinue={handleContinue} />;
+                return <EmbedSection handleContinue={handleContinue} embedUrl={embedUrl} />;
             case 3:
                 return <TestCaseSection handleSubmit={handleSubmit} />;
             case 4:

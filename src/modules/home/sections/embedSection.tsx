@@ -45,7 +45,7 @@ const ShareIcon = () => (
     </svg>
 );
 
-const EmbedSection = ({ handleContinue }: any) => {
+const EmbedSection = ({ handleContinue, embedUrl }: any) => {
     const [currentTab, setCurrentTab] = useState("embed");
     const [htmlTab, setHtmlTab] = useState("popup-html");
     const [authorization, setAuthorization] = useState("no-auth");
@@ -101,7 +101,7 @@ const EmbedSection = ({ handleContinue }: any) => {
                         <div className="text-gray-600 py-4">
                             <p>Paste this anywhere in the &lt;body&gt; tag of your html file.</p>
                             <p className="mt-2">
-                                You can also specify a <a href="#" className="text-blue-600">version</a>: https://cdn.jsdelivr.net/npm/flowise-embed@&lt;version&gt;/dist/web.js
+                                You can also specify a <a href="#" className="text-blue-600">version</a>: {embedUrl}
                             </p>
                         </div>
                         <div className="relative bg-gray-900 text-gray-300 rounded-md p-4 font-mono text-sm">

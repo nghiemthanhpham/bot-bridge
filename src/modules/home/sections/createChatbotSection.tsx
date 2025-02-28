@@ -11,7 +11,7 @@ interface Field {
     icon: React.ReactNode;
 }
 
-const CreateChatbotSection = ({ handleCreateChatbot }: { handleCreateChatbot: () => void }) => {
+const CreateChatbotSection = ({ handleCreateChatbot }: any) => {
     const fields: Field[] = [
         { id: 'photography', name: 'Chụp ảnh', icon: <Camera className="h-4 w-4" /> },
         { id: 'design', name: 'Thiết kế', icon: <Figma className="h-4 w-4" /> },
@@ -22,6 +22,7 @@ const CreateChatbotSection = ({ handleCreateChatbot }: { handleCreateChatbot: ()
     ];
 
     const [selectedFields, setSelectedFields] = useState<string[]>([]);
+    const [url, setUrl] = useState<any>("" as any);
 
     const handleSelectField = (fieldId: string) => {
         if (selectedFields.includes(fieldId)) {
@@ -39,6 +40,8 @@ const CreateChatbotSection = ({ handleCreateChatbot }: { handleCreateChatbot: ()
                     <Globe className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 transform text-gray-500" />
                     <Input
                         type='text'
+                        value={url}
+                        onChange={(e) => setUrl(e.target.value)}
                         placeholder="https://example.com"
                         className='pl-8'
                     />
@@ -62,7 +65,7 @@ const CreateChatbotSection = ({ handleCreateChatbot }: { handleCreateChatbot: ()
             </div>
             <div className='h-[20px]'></div>
             <Button
-                onClick={handleCreateChatbot}
+                onClick={() => handleCreateChatbot(url, selectedFields)}
                 className='w-5/6 lg:w-80 md:w-80'
             >
                 Bắt đầu tạo chatbot
